@@ -7,6 +7,12 @@
 				"navigationStyle": "custom",
 				"navigationBarTextStyle": "white"
 			}
+		},
+		{
+			"path": "pages/login/index",
+			"style":{
+				"navigationBarTitleText": "登录"
+			}
 		}
 	],
 	"globalStyle": {
