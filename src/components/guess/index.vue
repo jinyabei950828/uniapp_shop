@@ -19,6 +19,7 @@ defineProps({
       class="guess-item"
       v-for="item in list"
       :key="item.id"
+      :url="`/pages/goods/index?id=${item.id}`"
     >
       <image class="image" mode="aspectFill" :src="item.picture"/>
       <view class="name">{{ item.name }}</view>

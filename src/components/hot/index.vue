@@ -13,6 +13,7 @@ defineProps({
       <navigator 
         open-type="navigate"
         hover-class="none"
+        :url="`/pages/hot/index?type=${item.type}`"
       >
         <view class="title">
           <text>{{ item.title}}</text>
