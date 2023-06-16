@@ -23,6 +23,12 @@
 			}
 		},
 		{
+			"path":"pages/category/index",
+			"style":{
+				"navigationBarTitleText": "商品分类"
+			}
+		}
+		{
 			"path": "pages/login/index",
 			"style":{
 				"navigationBarTitleText": "登录"
@@ -61,7 +67,7 @@
 			},
 			{
 				"text": "分类",
-				"pagePath": "pages/index/index",
+				"pagePath": "pages/category/index",
 				"iconPath": "static/tabs/category_default.png",
         "selectedIconPath": "static/tabs/category_selected.png"
 			},
