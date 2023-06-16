@@ -4,6 +4,8 @@ import { onLoad } from '@dcloudio/uni-app';
 
 import {getGoodsById} from '@/services/category'
 
+import SkuPopup from '@/components/sku-popup'
+
 const props = defineProps({
   id:String
 })
@@ -11,7 +13,10 @@ const props = defineProps({
 const state = reactive({
   goodsList:{},
   bannerImgList:[],//轮播图数据
-  isLoading:false
+  isLoading:false,
+  current: 0,//当前图片下标为零
+  isShowSku:false,//是否显示sku组件
+  mode:2,//按钮模式
 })
 
 const getGoodsDetailData = async()=>{
@@ -21,12 +26,34 @@ const getGoodsDetailData = async()=>{
   state.bannerImgList = res.result.mainPictures
 }
 
+//改变轮播图
+const onChangeSwiper = (e)=>{
+  state.current = e.current
+}
+
+//点击轮播图
+const onSwiperitem = ()=>{
+  uni.previewImage({
+    current:state.current,
+    urls:state.bannerImgList
+  })
+}
+
 //打开地址弹窗
 const onChangePopup = (type)=>{
   if(type=='Address'){
 
   }
 }
+
+//打开sku弹窗
+const openSkuPopup = (val)=>{
+  state.isShowSku = true
+  state.mode = val
+}
+
+//获取安全距离
+const {safeAreaInsets} = uni.getSystemInfoSync()
 
 onLoad(async()=>{
   state.isLoading = true
@@ -36,24 +63,35 @@ onLoad(async()=>{
 </script>
 
 <template>
-  商品详情
-  {{ state.bannerImgList }}
   <view v-if="state.isLoading">加载种</view>
   <scroll-view scroll-y class="goods" v-else>
     <!-- 轮播图 -->
-    <u-swiper 
+    <u-swiper
+      height="750rpx" 
       :list="state.bannerImgList"
+      radius="0"
+      :autoplay="false"
+      circular
+      indicatorStyle="right:20px"
+      class="banner"
+      @change="onChangeSwiper"
+      @click="onSwiperitem"
     >
-    <!-- 商品简介 -->
-    <view class="meta">
-      <view class="price">
-        <text class="symbol">￥</text>
-        <text class="number">{{ state.goodsList.price }}</text>
+    <template #indicator>
+      <view class="indicator-num">
+        <text class="indicator-num__text">{{state.current+1}}/{{state.bannerImgList.length  }}</text>
       </view>
-      <view class="name ellipsis">{{ state.goodsList.name }}</view>
-      <view class="desc">{{ state.goodsList.desc }}</view>
+    </template>
+  </u-swiper>
+  <!-- 商品简介 -->
+  <view class="meta">
+    <view class="price">
+      <text class="symbol">￥</text>
+      <text class="number">{{ state.goodsList.price }}</text>
     </view>
-    </u-swiper>
+    <view class="name ellipsis">{{ state.goodsList.name }}</view>
+    <view class="desc">{{ state.goodsList.desc }}</view>
+  </view>
 
     <!-- 操作面板 -->
     <view class="action">
@@ -137,13 +175,51 @@ onLoad(async()=>{
     </view>
 
     <!-- 用户操作 -->
-    
+    <view class="toolbar" style="{ padding-bottom:safeAreaInsets?.bottom +'px'}">
+      <view class="icons">
+        <button class="icons-button">  
+          <text class="icon-heart"></text>收藏
+        </button>
+        <button class="icons-button" open-type="contact">
+          <text class="icon-handset"></text>客服
+        </button>
+        <navigator
+          url="/pages/cart/index"
+          class="icons-button"
+        >
+          <text class="icon-cart"></text>购物车
+        </navigator>
+      </view>
+      <view class="buttons">
+        <view class="addcart" @click="openSkuPopup(2)">加入购物车</view>
+        <view class="payment" @click="openSkuPopup(3)">立即购买</view>
+      </view>
+    </view>
+
+    <!-- SKU弹出组件 -->
+    <SkuPopup 
+      v-model="state.isShowSku"
+      :mode="state.mode"
+    />
   </scroll-view>
 </template>
 
 <style lang="scss">
 .goods {
   background-color: #f4f4f4;
+}
+.indicator-num {
+  padding: 2px 0;
+  background-color: rgba(0, 0, 0, 0.35);
+  border-radius: 100px;
+  width: 35px;
+  @include flex;
+  justify-content: center;
+
+  &__text {
+    color: #ffffff;
+    font-size: 12px;
+  }
 }
 .meta {
   // position: relative;
@@ -295,6 +371,57 @@ onLoad(async()=>{
   .number {
     font-size: 26rpx;
     margin-left: 2rpx;
+  }
+}
+
+/* 底部工具栏 */
+.toolbar {
+  background-color: #fff;
+  height: 100rpx;
+  padding: 0 20rpx;
+  border-top: 1rpx solid #eaeaea;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  //box-sizing: content-box;
+  .buttons {
+    display: flex;
+    & > view {
+      width: 220rpx;
+      text-align: center;
+      line-height: 72rpx;
+      font-size: 26rpx;
+      color: #fff;
+      border-radius: 72rpx;
+    }
+    .addcart {
+      background-color: #ffa868;
+    }
+    .payment {
+      background-color: #27ba9b;
+      margin-left: 20rpx;
+    }
+  }
+  .icons {
+    padding-right: 10rpx;
+    display: flex;
+    align-items: center;
+    flex: 1;
+    .icons-button {
+      flex: 1;
+     text-align: center;
+      line-height: 1.4;
+      padding: 0;
+      margin: 0;
+      border-radius: 0;
+      font-size: 20rpx;
+      color: #333;
+      background-color: #fff;
+    }
+    text {
+      display: block;
+      font-size: 34rpx;
+    }
   }
 }
 

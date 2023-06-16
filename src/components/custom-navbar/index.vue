@@ -48,26 +48,25 @@ const { safeAreaInsets } = uni.getSystemInfoSync()
 	}
   }
   .search{
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	padding: 0 10rpx 0 26rpx;
-	height: 64rpx;
-	margin:16rpx 20rpx;
-	color:#fff;
-	font-size: 28rpx;
-	border-radius: 32rpx ;
-	background-color: rgba(255,255,255,0.5);
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 0 10rpx 0 26rpx;
+		height: 64rpx;
+		margin:16rpx 20rpx;
+		color:#fff;
+		font-size: 28rpx;
+		border-radius: 32rpx ;
+		background-color: rgba(255,255,255,0.5);
   }
   .icon-search{
-	&::before{
-	   margin-right: 10rpx;
-	}
+		&::before{
+			margin-right: 10rpx;
+		}
   }
   .icon-scan{
-	font-size: 30rpx;
-	padding: 15rpx;
+		font-size: 30rpx;
+		padding: 15rpx;
   }
-  
 }
 </style>

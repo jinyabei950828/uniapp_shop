@@ -35,3 +35,12 @@ export const getHomeGuess = (data)=>{
     data
   })
 }
+
+//通过热门类型推荐
+export const getHotRecommend = (url,data)=>{
+  return http({
+    method:'GET',
+    url,
+    data
+  })
+}
