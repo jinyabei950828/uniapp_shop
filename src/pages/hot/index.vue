@@ -49,10 +49,8 @@ onLoad(async()=>{
 
 //滚动触底
 const onScrolltolower = async ()=>{
-  console.log("===出发了吗")
   //当前活跃数据
-  const activeSubTypes = state.subTypes[state.subTypes]
-
+  const activeSubTypes = state.subTypes[state.tabActive]
   if(activeSubTypes.goodsItems.page<activeSubTypes.goodsItems.pages){
     activeSubTypes.goodsItems.page++
   }else{
@@ -78,7 +76,7 @@ const onScrolltolower = async ()=>{
 <template>
   <view class="hot">
     <view v-if="state.isLoading">加载中</view>
-    <view v-else>
+    <template v-else>
       <!-- 推荐封面和选项 -->
       <view class="top">
         <view class="cover">
@@ -127,7 +125,7 @@ const onScrolltolower = async ()=>{
         </view>
         <text class="loading-text">{{ item.finish?'没有更多数据了':'正在加载中...' }}</text>
       </scroll-view>
-    </view>
+    </template>
   </view>
 </template>
 
@@ -137,8 +135,8 @@ page {
   background-color: #f4f4f4;
 }
 .hot {
-  // display: flex;
-  // flex-direction: column;
+  display: flex;
+  flex-direction: column;
   height: 100%;
   padding: 180rpx 0 0;
   position: relative;

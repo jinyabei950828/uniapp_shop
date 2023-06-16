@@ -57,9 +57,8 @@ const getHomeGuessData = async ()=>{
   state.guess.totalPages = res.result.pages
 }
 
-//上拉事件
+//下拉添加
 const onScrolltolower = ()=>{
-  console.log("===进来了吗")
   if(state.finish===true){
     return uni.showToast({
       icon:'none',
@@ -67,7 +66,6 @@ const onScrolltolower = ()=>{
     })
   }
   if(state.guess.page<state.guess.totalPages){
-    console.log("===进来了吗")
     state.guess.page++
     getHomeGuessData()
   }else{
@@ -82,9 +80,8 @@ const resetData = () => {
   state.homeGuessList = []
 }
 
-//下拉刷新
+//上拉刷新
 const onRefresherrefresh = async ()=>{
-  console.log("===进来了吗1")
   state.isTriggered = true
 
   resetData()
